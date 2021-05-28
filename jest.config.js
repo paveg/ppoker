@@ -1,21 +1,17 @@
 module.exports = {
   roots: ['<rootDir>'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'jsx'],
-  testPathIgnorePatterns: [
-    '<rootDir>[/\\\\](node_modules|.next)[/\\\\]',
-    '<rootDir>/test/Storyshots.test.ts',
-  ],
+  testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
   transform: {
-    '^.+\\.(js|ts|tsx)$': 'babel-jest',
+    '^.+\\.(ts|tsx)$': 'babel-jest',
   },
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
   moduleNameMapper: {
-    '\\.(styl|css|less|scss)$': 'identity-obj-proxy',
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
   },
-  moduleDirectories: ['node_modules', 'src'],
 }
