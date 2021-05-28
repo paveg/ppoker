@@ -5,7 +5,26 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "export": "next export",
+    "start": "next start",
+    "typecheck": "tsc --pretty --noEmit",
+    "format": "prettier --write .",
+    "lint": "eslint src --ext ts --ext tsx",
+    "lint:fix": "eslint src --ext ts --ext tsx --fix",
+    "test": "jest",
+    "test:all": "npm lint && npm typecheck && npm test",
+    "update-snapshots": "jest --updateSnapshot",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook -o build -s ./stories/assets",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.@(js|jsx|ts|tsx|json|md|css|html)": [
+      "npm run format"
+    ],
+    "*.@(ts|tsx|js)": [
+      "npm run lint:fix -- --cache"
+    ]
   },
   "dependencies": {
     "next": "10.2.3",
@@ -13,7 +32,33 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^6.2.9",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/react": "^6.2.9",
+    "@testing-library/react": "^11.2.7",
+    "@types/jest": "^26.0.23",
     "@types/react": "17.0.8",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "autoprefixer": "^10.2.6",
+    "babel-jest": "^27.0.1",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^6.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.0.1",
+    "jest-watch-typeahead": "^0.6.4",
+    "lint-staged": "^11.0.0",
+    "postcss": "^8.3.0",
+    "postcss-nested": "^5.0.5",
+    "prettier": "^2.3.0",
+    "tailwindcss": "^2.1.2",
     "typescript": "4.3.2"
   }
 }
