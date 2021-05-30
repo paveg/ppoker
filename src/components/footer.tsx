@@ -6,7 +6,13 @@ export const Footer: React.VFC = (): JSX.Element => {
   return (
     <footer className="text-gray-600 body-font">
       <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-        <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+        <a
+          className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"
+          href={'https://ppoker.vercel.app/'}
+        >
+          <span className="ml-3 text-xl sm:text-center">ppoker</span>
+        </a>
+        <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
           © 2021 Ryota Ikezawa —
           <a
             href="https://twitter.com/_pavlog"
@@ -23,7 +29,7 @@ export const Footer: React.VFC = (): JSX.Element => {
               target="_blank"
               rel="noreferrer noopener"
               aria-label="Go to Twitter profile page."
-              className="px-2 py-2 text-xs hover:bg-gray-200 text-black m-1 rounded-md transition duration-500 select-none focus:outline-none focus:shadow-outline"
+              className="px-4 py-2 text-xs hover:bg-gray-200 text-black m-1 rounded-md transition duration-500 select-none focus:outline-none focus:shadow-outline"
             >
               <TwitterIcon />
             </a>
@@ -33,7 +39,7 @@ export const Footer: React.VFC = (): JSX.Element => {
               target="_blank"
               rel="noreferrer noopener"
               aria-label="Go to Github repository page."
-              className="px-2 py-2 text-xs hover:bg-gray-200 text-black m-1 rounded-md transition duration-500 select-none focus:outline-none focus:shadow-outline"
+              className="px-4 py-2 text-xs hover:bg-gray-200 text-black m-1 rounded-md transition duration-500 select-none focus:outline-none focus:shadow-outline"
             >
               <GitHubIcon />
             </a>
