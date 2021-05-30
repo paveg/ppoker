@@ -6,10 +6,13 @@ import { useRecoilValue, useSetRecoilState, SetterOrUpdater } from 'recoil'
 import { userSelector } from '../selectors/userSelector'
 import User, { RoleType } from '../types/user'
 import { userState } from '../atoms/userAtom'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
+  const router = useRouter()
   const user: User = useRecoilValue(userSelector)
   const setUser: SetterOrUpdater<User> = useSetRecoilState(userState)
+  const [roomId, setRoomId] = React.useState('')
 
   const onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +88,15 @@ const Home: NextPage = () => {
                 type="button"
                 className="bg-black text-white px-3 rounded-md hover:bg-gray-800"
                 onClick={() => {
-                  // TODO: Please, implementation.
+                  router.push({
+                    pathname: '/rooms',
+                    query: {
+                      id:
+                        Math.floor(
+                          Math.random() * (Number.MAX_SAFE_INTEGER - 1),
+                        ) + 1,
+                    },
+                  })
                 }}
               >
                 Create new room
@@ -99,13 +110,20 @@ const Home: NextPage = () => {
                 type="text"
                 placeholder="Room number"
                 className="px-1 rounded-md"
+                onChange={(e) => setRoomId(e.target.value)}
+                value={roomId}
               />
               <Link href="/rooms" passHref>
                 <button
                   type="button"
                   className="ml-2 bg-black text-white px-3 rounded-md hover:bg-gray-800"
                   onClick={() => {
-                    // TODO: Please, implementation.
+                    router.push({
+                      pathname: '/rooms',
+                      query: {
+                        id: roomId,
+                      },
+                    })
                   }}
                 >
                   Join room
