@@ -30,7 +30,7 @@ const Home: NextPage = () => {
         <h1 className="font-semibold md:text-4xl sm:text-2xl text-xl mb-4 text-center">
           <p>Planning Poker</p>
         </h1>
-        <div className="text-xs md:text-sm md:text-left">
+        <div className="text-sm md:text-base md:text-left">
           <p>
             <span className="font-bold">Select</span> your role.
           </p>
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
                         />
                         <label
                           htmlFor="moderator"
-                          className="hover:underline ml-1 block text-xs md:text-sm font-medium text-gray-700"
+                          className="hover:underline ml-1 block text-sm md:text-base font-medium text-gray-700"
                         >
                           Moderator
                         </label>
@@ -69,7 +69,7 @@ const Home: NextPage = () => {
                         />
                         <label
                           htmlFor="member"
-                          className="hover:underline ml-1 block text-xs md:text-sm font-medium text-gray-700"
+                          className="hover:underline ml-1 block text-sm md:text-base font-medium text-gray-700"
                         >
                           Member
                         </label>
@@ -122,7 +122,7 @@ const Home: NextPage = () => {
                   })
                 }}
               >
-                Join room
+                Join
               </button>
             </>
           )}
