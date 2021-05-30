@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import Head from 'next/head'
 import { useRecoilValue, useSetRecoilState, SetterOrUpdater } from 'recoil'
 import { userSelector } from '../selectors/userSelector'
@@ -83,25 +82,23 @@ const Home: NextPage = () => {
           </div>
 
           {user.role === 'moderator' ? (
-            <Link href="/rooms" passHref>
-              <button
-                type="button"
-                className="bg-black text-white px-3 rounded-md hover:bg-gray-800"
-                onClick={() => {
-                  router.push({
-                    pathname: '/rooms',
-                    query: {
-                      id:
-                        Math.floor(
-                          Math.random() * (Number.MAX_SAFE_INTEGER - 1),
-                        ) + 1,
-                    },
-                  })
-                }}
-              >
-                Create new room
-              </button>
-            </Link>
+            <button
+              type="button"
+              className="bg-black text-white px-3 rounded-md hover:bg-gray-800"
+              onClick={() => {
+                router.push({
+                  pathname: '/rooms',
+                  query: {
+                    id:
+                      Math.floor(
+                        Math.random() * (Number.MAX_SAFE_INTEGER - 1),
+                      ) + 1,
+                  },
+                })
+              }}
+            >
+              Create new room
+            </button>
           ) : (
             <>
               <span className="font-bold">Enter room number</span>
@@ -113,22 +110,20 @@ const Home: NextPage = () => {
                 onChange={(e) => setRoomId(e.target.value)}
                 value={roomId}
               />
-              <Link href="/rooms" passHref>
-                <button
-                  type="button"
-                  className="ml-2 bg-black text-white px-3 rounded-md hover:bg-gray-800"
-                  onClick={() => {
-                    router.push({
-                      pathname: '/rooms',
-                      query: {
-                        id: roomId,
-                      },
-                    })
-                  }}
-                >
-                  Join room
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="ml-2 bg-black text-white px-3 rounded-md hover:bg-gray-800"
+                onClick={() => {
+                  router.push({
+                    pathname: '/rooms',
+                    query: {
+                      id: roomId,
+                    },
+                  })
+                }}
+              >
+                Join room
+              </button>
             </>
           )}
         </div>
