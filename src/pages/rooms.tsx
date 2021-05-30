@@ -2,6 +2,7 @@ import { useRecoilValue } from 'recoil'
 import { userSelector } from '../selectors/userSelector'
 import User from '../types/user'
 import { useRouter } from 'next/router'
+import { Footer } from '../components/footer'
 
 const Room: React.FC = () => {
   const user: User = useRecoilValue(userSelector)
@@ -22,6 +23,7 @@ const Room: React.FC = () => {
           TODO: Implementation room page
         </div>
       </div>
+      <Footer />
     </>
   )
 }

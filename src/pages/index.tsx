@@ -6,6 +6,7 @@ import { userSelector } from '../selectors/userSelector'
 import User, { RoleType } from '../types/user'
 import { userState } from '../atoms/userAtom'
 import { useRouter } from 'next/router'
+import { Footer } from '../components/footer'
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -128,6 +129,7 @@ const Home: NextPage = () => {
           )}
         </div>
       </div>
+      <Footer />
     </>
   )
 }
