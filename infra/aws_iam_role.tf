@@ -14,47 +14,34 @@ resource "aws_iam_role" "ppoker_iam_role" {
     ]
     Version = "2012-10-17"
   })
+}
 
-  inline_policy {
-    name = "ppoker_dynamodb_policy"
-    policy = jsonencode({
-      Statement = [
-        {
-          Action = [
-            "dynamodb:BatchGetItem",
-            "dynamodb:BatchWriteItem",
-            "dynamodb:PutItem",
-            "dynamodb:DescribeTable",
-            "dynamodb:DeleteItem",
-            "dynamodb:GetItem",
-            "dynamodb:Scan",
-            "dynamodb:Query",
-            "dynamodb:UpdateItem",
-          ]
-          Effect = "Allow"
-          Resource = [
-            "arn:aws:dynamodb:ap-northeast-1:324509266413:table/ppoker_connections",
-            "arn:aws:dynamodb:ap-northeast-1:324509266413:table/ppoker_connections/index/*",
-          ]
-          Sid = "VisualEditor0"
-        }
-      ]
-      Version = "2012-10-17"
-    })
-  }
+resource "aws_iam_policy" "dynamo_policy_web_sockets_messages" {
+  name   = "websockets_messages_dynamo_policy_all"
+  policy = data.aws_iam_policy_document.dynamo_access_policy.json
+}
 
-  inline_policy {
-    name = "ppoker_execute_api_policy"
-    policy = jsonencode({
-      Statement = [
-        {
-          Action   = "execute-api:*"
-          Effect   = "Allow"
-          Resource = "arn:aws:execute-api:ap-northeast-1:324509266413:*/*/*/*"
-          Sid      = "VisualEditor0"
-        },
-      ]
-      Version = "2012-10-17"
-    })
-  }
+resource "aws_iam_policy" "default_policy_web_sockets_messages" {
+  name   = "websockets_messages_default_policy_all"
+  policy = data.aws_iam_policy_document.default_lambda_policy.json
+}
+
+resource "aws_iam_policy" "execute_api_policy_web_sockets_messages" {
+  name   = "websockets_messages_execute_api_policy_all"
+  policy = data.aws_iam_policy_document.execute_api_access_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_ws_to_dynamo" {
+  role       = aws_iam_role.ppoker_iam_role.name
+  policy_arn = aws_iam_policy.dynamo_policy_web_sockets_messages.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_ws_to_default" {
+  role       = aws_iam_role.ppoker_iam_role.name
+  policy_arn = aws_iam_policy.default_policy_web_sockets_messages.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_ws_to_execute_api" {
+  role       = aws_iam_role.ppoker_iam_role.name
+  policy_arn = aws_iam_policy.execute_api_policy_web_sockets_messages.arn
 }
