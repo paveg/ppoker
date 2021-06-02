@@ -31,7 +31,7 @@ exports.handler = function (event, context, callback) {
       var count = 0
 
       data.Items.forEach(function (element) {
-        // ユーザの誰かが “sendmessage”アクションでメッセージを送信すると、
+        // ユーザの誰かが message”アクションでメッセージを送信すると、
         // DynamoDBテーブルから、現在接続されているすべてのユーザを検索します。
         // 検索されたすべてのユーザに対して、postToConnectionを呼ぶことでメッセージを送信します。
         postParams.ConnectionId = element.connectionId.S

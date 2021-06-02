@@ -30,12 +30,12 @@ resource "aws_lambda_function" "ppoker_disconnect_lambda" {
   }
 }
 
-resource "aws_lambda_function" "ppoker_sendmessage_lambda" {
-  filename      =  data.archive_file.SendMessageZip.output_path
-  function_name = "ppoker_sendmessage_lambda"
+resource "aws_lambda_function" "ppoker_message_lambda" {
+  filename      =  data.archive_file.MessageZip.output_path
+  function_name = "ppoker_message_lambda"
   role          = aws_iam_role.ppoker_iam_role.arn
   handler       = "index.handler"
-  source_code_hash = data.archive_file.SendMessageZip.output_base64sha256
+  source_code_hash = data.archive_file.MessageZip.output_base64sha256
   runtime = "nodejs12.x"
 
   environment {

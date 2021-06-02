@@ -4,6 +4,6 @@ resource "aws_apigatewayv2_deployment" "Deployment" {
   depends_on = [
     aws_apigatewayv2_route.connect_route,
     aws_apigatewayv2_route.disconnect_route,
-    aws_apigatewayv2_route.sendmessage_route,
+    aws_apigatewayv2_route.message_route,
   ]
 }

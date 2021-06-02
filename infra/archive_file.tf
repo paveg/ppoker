@@ -10,8 +10,8 @@ data "archive_file" "DisconnectZip" {
   output_path = "lambdas/dist/ppoker_disconnect_lambda.zip"
 }
 
-data "archive_file" "SendMessageZip" {
+data "archive_file" "MessageZip" {
   type        = "zip"
-  source_dir = "lambdas/ppoker_sendmessage_lambda"
-  output_path = "lambdas/dist/ppoker_sendmessage_lambda.zip"
+  source_dir = "lambdas/ppoker_message_lambda"
+  output_path = "lambdas/dist/ppoker_message_lambda.zip"
 }
