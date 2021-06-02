@@ -7,8 +7,11 @@ const endpoint = `wss://${apiId}.execute-api.ap-northeast-1.amazonaws.com/produc
 const useSocket = (): any => {
   const router = useRouter()
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
-    `${endpoint}?roomId=${router.query.id}`,
-    { share: true },
+    `${endpoint}`,
+    {
+      share: true,
+      queryParams: { roomId: String(router.query.id) },
+    },
   )
   const connectionStatusMessage = {
     [ReadyState.CONNECTING]: 'Connecting',
