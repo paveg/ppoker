@@ -51,6 +51,18 @@ const Room: React.FC = () => {
                 ))}
             </ul>
           </div>
+          <p>
+            The WebSocket is currently{' '}
+            <span
+              className={
+                connectionStatusMessage === 'Open'
+                  ? 'font-bold text-green-600'
+                  : 'font-semibold text-yellow-500'
+              }
+            >
+              {connectionStatusMessage}
+            </span>
+          </p>
           <div className="flex flex-row">
             <input
               type="text"
