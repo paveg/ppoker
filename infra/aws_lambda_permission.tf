@@ -14,10 +14,10 @@ resource "aws_lambda_permission" "ppoker_lambda_permission_disconnect" {
   source_arn    = "${aws_apigatewayv2_api.ppoker_websocket_api.execution_arn}/*/$disconnect"
 }
 
-resource "aws_lambda_permission" "ppoker_lambda_permission_message" {
-  depends_on    = [aws_lambda_function.ppoker_message_lambda]
+resource "aws_lambda_permission" "ppoker_lambda_permission_sendmessage" {
+  depends_on    = [aws_lambda_function.ppoker_sendmessage_lambda]
   principal     = "apigateway.amazonaws.com"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.ppoker_message_lambda.function_name
-  source_arn    = "${aws_apigatewayv2_api.ppoker_websocket_api.execution_arn}/*/message"
+  function_name = aws_lambda_function.ppoker_sendmessage_lambda.function_name
+  source_arn    = "${aws_apigatewayv2_api.ppoker_websocket_api.execution_arn}/*/sendmessage"
 }

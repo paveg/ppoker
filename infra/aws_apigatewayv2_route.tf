@@ -13,9 +13,9 @@ resource "aws_apigatewayv2_route" "disconnect_route" {
   target         = "integrations/${aws_apigatewayv2_integration.ppoker_ws_disconnect_integration.id}"
 }
 
-resource "aws_apigatewayv2_route" "message_route" {
+resource "aws_apigatewayv2_route" "sendmessage_route" {
   api_id         = aws_apigatewayv2_api.ppoker_websocket_api.id
-  route_key      = "message"
-  operation_name = "MessageRoute"
-  target         = "integrations/${aws_apigatewayv2_integration.ppoker_ws_message_integration.id}"
+  route_key      = "sendmessage"
+  operation_name = "SendMessageRoute"
+  target         = "integrations/${aws_apigatewayv2_integration.ppoker_ws_sendmessage_integration.id}"
 }
