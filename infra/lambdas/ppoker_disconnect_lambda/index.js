@@ -6,10 +6,17 @@ AWS.config.update({ region: process.env.AWS_REGION })
 var DDB = new AWS.DynamoDB({ apiVersion: '2012-10-08' })
 
 exports.handler = function (event, context, callback) {
+  let roomId = ''
+  const params = event.queryStringParameters
+  if (params && params.roomId) {
+    roomId = params.roomId
+  }
+
   var deleteParams = {
     TableName: process.env.TABLE_NAME,
     Key: {
       connectionId: { S: event.requestContext.connectionId },
+      roomId: roomId,
     },
   }
 
