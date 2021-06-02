@@ -43,7 +43,7 @@ const Room: React.FC = () => {
           <div className="py-5">
             <ul>
               {messageHistory.current
-                .filter((message) => message != '')
+                .filter((message) => message !== null)
                 .map((message: any, idx: number) => (
                   <li key={message + idx}>
                     {message ? '$ ' + message.data : null}
