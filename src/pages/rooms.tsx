@@ -6,11 +6,13 @@ import { Footer } from '../components/footer'
 import useSocket from '../hooks/useSocket'
 import * as React from 'react'
 
+type MessageProps = WebSocketEventMap['message'] | null
+
 const Room: React.FC = () => {
   const user: User = useRecoilValue(userSelector)
   const router = useRouter()
   const [msg, setMsg] = React.useState('')
-  const messageHistory = React.useRef([])
+  const messageHistory = React.useRef<MessageProps[]>([])
   const { sendJsonMessage, lastMessage, connectionStatusMessage } = useSocket()
 
   messageHistory.current = React.useMemo(
@@ -46,7 +48,7 @@ const Room: React.FC = () => {
                   <li key={message + idx}>
                     {message ? '$ ' + message.data : null}
                   </li>
-              ))}
+                ))}
             </ul>
           </div>
           <div className="flex flex-row">
