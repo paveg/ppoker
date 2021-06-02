@@ -6,7 +6,6 @@ resource "aws_dynamodb_table" "ppoker_connections" {
   read_capacity  = 5
   write_capacity = 5
   tags           = {}
-
   attribute {
     name = "connectionId"
     type = "S"
@@ -14,5 +13,12 @@ resource "aws_dynamodb_table" "ppoker_connections" {
   attribute {
     name = "roomId"
     type = "S"
+  }
+  global_secondary_index {
+    name           = "roomId-index"
+    hash_key       = "roomId"
+    read_capacity  = 5
+    write_capacity = 5
+    projection_type = "ALL"
   }
 }
