@@ -101,7 +101,6 @@ const Home: NextPage = () => {
             </button>
           ) : (
             <>
-              <span className="font-bold">Enter room number</span>
               <br />
               <input
                 type="text"
