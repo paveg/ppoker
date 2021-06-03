@@ -1,66 +1,60 @@
-// Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+const AWS = require('aws-sdk')
 
-var AWS = require('aws-sdk')
-AWS.config.update({ region: process.env.AWS_REGION })
-var DDB = new AWS.DynamoDB({ apiVersion: '2012-10-08' })
+const DDB = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 
-require('aws-sdk/clients/apigatewaymanagementapi')
+const { TABLE_NAME } = process.env
 
-exports.handler = function (event, context, callback) {
-  var scanParams = {
-    TableName: process.env.TABLE_NAME,
-    ProjectionExpression: 'connectionId',
+exports.handler = async (event, _context) => {
+  let roomId = ''
+  const params = event.queryStringParameters
+  if (params && params.roomId) {
+    roomId = params.roomId
   }
 
-  DDB.scan(scanParams, function (err, data) {
-    if (err) {
-      callback(null, {
-        statusCode: 500,
-        body: JSON.stringify(err),
-      })
-    } else {
-      var apigwManagementApi = new AWS.ApiGatewayManagementApi({
-        apiVersion: '2018-11-29',
-        endpoint:
-          event.requestContext.domainName + '/' + event.requestContext.stage,
-      })
-      var postParams = {
-        Data: JSON.parse(event.body).data,
+  const queryParams = {
+    TableName: TABLE_NAME,
+    KeyConditionExpression: '#ROOMID = :ROOMID',
+    ExpressionAttributeNames: { '#ROOMID': 'roomId' },
+    ExpressionAttributeValues: { ':ROOMID': roomId },
+    IndexName: 'roomId-index',
+  }
+  const connectionData = await DDB.query(queryParams).promise()
+
+  const apigwManagementApi = new AWS.ApiGatewayManagementApi({
+    apiVersion: '2018-11-29',
+    endpoint:
+      event.requestContext.domainName + '/' + event.requestContext.stage,
+  })
+
+  const postData = JSON.parse(event.body).data
+  const selfConnectionId = event.requestContext.connectionId
+
+  const postCalls = connectionData.Items.map(async ({ connectionId }) => {
+    try {
+      if (selfConnectionId !== connectionId) {
+        await apigwManagementApi
+          .postToConnection({ ConnectionId: connectionId, Data: postData })
+          .promise()
       }
-      var count = 0
-
-      data.Items.forEach(function (element) {
-        // ユーザの誰かが sendmessage”アクションでメッセージを送信すると、
-        // DynamoDBテーブルから、現在接続されているすべてのユーザを検索します。
-        // 検索されたすべてのユーザに対して、postToConnectionを呼ぶことでメッセージを送信します。
-        postParams.ConnectionId = element.connectionId.S
-        apigwManagementApi.postToConnection(postParams, function (err) {
-          if (err) {
-            if (err.statusCode === 410) {
-              // eslint-disable-next-line no-console
-              console.log(
-                'Found stale connection, deleting ' + postParams.connectionId,
-              )
-              DDB.deleteItem({
-                TableName: process.env.TABLE_NAME,
-                Key: { connectionId: { S: postParams.connectionId } },
-              })
-            } else {
-              // eslint-disable-next-line no-console
-              console.log('Failed to post. Error: ' + JSON.stringify(err))
-            }
-          } else {
-            count++
-          }
-        })
-      })
-
-      callback(null, {
-        statusCode: 200,
-        body:
-          'Data send to ' + count + ' connection' + (count === 1 ? '' : 's'),
-      })
+    } catch (e) {
+      if (e.statusCode === 410) {
+        // eslint-disable-next-line no-console
+        console.log(`Found stale connection, deleting ${connectionId}`)
+        await DDB.delete({
+          TableName: TABLE_NAME,
+          Key: { connectionId },
+        }).promise()
+      } else {
+        throw e
+      }
     }
   })
+
+  try {
+    await Promise.all(postCalls)
+  } catch (e) {
+    return { statusCode: 500, body: e.stack }
+  }
+
+  return { statusCode: 200, body: 'Data sent.' }
 }
