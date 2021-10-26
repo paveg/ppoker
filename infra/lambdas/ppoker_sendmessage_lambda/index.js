@@ -5,12 +5,7 @@ const DDB = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 const { TABLE_NAME } = process.env
 
 exports.handler = async (event, _context) => {
-  let roomId = ''
-  const params = event.queryStringParameters
-  if (params && params.roomId) {
-    roomId = params.roomId
-  }
-
+  const roomId = JSON.parse(event.body).data.roomId
   const queryParams = {
     TableName: TABLE_NAME,
     KeyConditionExpression: '#ROOMID = :ROOMID',
@@ -26,7 +21,7 @@ exports.handler = async (event, _context) => {
       event.requestContext.domainName + '/' + event.requestContext.stage,
   })
 
-  const postData = JSON.parse(event.body).data
+  const postData = JSON.parse(event.body).data.message
   const selfConnectionId = event.requestContext.connectionId
 
   const postCalls = connectionData.Items.map(async ({ connectionId }) => {
@@ -38,8 +33,6 @@ exports.handler = async (event, _context) => {
       }
     } catch (e) {
       if (e.statusCode === 410) {
-        // eslint-disable-next-line no-console
-        console.log(`Found stale connection, deleting ${connectionId}`)
         await DDB.delete({
           TableName: TABLE_NAME,
           Key: { connectionId },

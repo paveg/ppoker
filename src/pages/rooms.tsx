@@ -11,7 +11,10 @@ type MessageProps = WebSocketEventMap['message'] | null
 const Room: React.FC = () => {
   const user: User = useRecoilValue(userSelector)
   const router = useRouter()
-  const [msg, setMsg] = React.useState('')
+  const [data, setData] = React.useState({
+    message: '',
+    roomId: router.query.id,
+  })
   const messageHistory = React.useRef<MessageProps[]>([])
   const { sendJsonMessage, lastMessage, connectionStatusMessage } = useSocket()
 
@@ -23,7 +26,7 @@ const Room: React.FC = () => {
   const onClick = () => {
     sendJsonMessage({
       action: 'sendmessage',
-      data: msg,
+      data: data,
     })
   }
 
@@ -68,8 +71,14 @@ const Room: React.FC = () => {
               type="text"
               placeholder="chat message"
               className="px-2 mr-2 rounded-md border"
-              onChange={(e) => setMsg(e.target.value)}
-              value={msg}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  roomId: router.query.id,
+                  message: e.target.value,
+                })
+              }
+              value={data.message}
             />
             <button
               type="button"

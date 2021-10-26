@@ -13,6 +13,7 @@ const useSocket = (): any => {
       queryParams: { roomId: String(router.query.id) },
     },
   )
+
   const connectionStatusMessage = {
     [ReadyState.CONNECTING]: 'Connecting',
     [ReadyState.OPEN]: 'Open',
